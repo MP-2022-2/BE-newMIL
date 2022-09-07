@@ -2,9 +2,9 @@ spring:
   datasource:
     #    #TODO AWS RDS
     #driver-class-name: com.mysql.cj.jdbc.Driver
-    #url: ENC(KbTJMBF/Fqb8EUZ3w1n1OM6KlfqhfVj0D0QM6gYu/Sku47OBotwXRfKlC83IxfyCrNj1Po8zANg5YRd0yd0E26pAev+jixwgKErSC62eOSHGtfmOCSxiNul6thnuxcZ1lgJ6vZUo969aFspXkTWDJzCb/Os38ydgp79hjwvJwv1bD4mvimX+jQ==)
+    #url:
     #username: root
-    #password: ENC(DWvuHafIMKngMp5WmlLGhWG7z2TLhzdr)
+    #password:
 
     #TODO 효택 태석
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -22,3 +22,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+jwt:
+  secret: ENC(0eo96hvRaBhDj2MKmNaXP7Jtmgyiul4znowNcHoNGfwN9axHt2p4MuRU54XbMEKFk5VCPcgNtpQb2El9s3d0JykDDduAR324G3Tj+3tLd6E293uT30TYm4+J2Xr+Luk9DPE0UplhamM=)
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

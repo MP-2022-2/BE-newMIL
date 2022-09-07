@@ -22,3 +22,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+jwt:
+  secret: ENC(0eo96hvRaBhDj2MKmNaXP7Jtmgyiul4znowNcHoNGfwN9axHt2p4MuRU54XbMEKFk5VCPcgNtpQb2El9s3d0JykDDduAR324G3Tj+3tLd6E293uT30TYm4+J2Xr+Luk9DPE0UplhamM=)
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
