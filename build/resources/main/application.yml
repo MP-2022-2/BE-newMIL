@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    #    #TODO AWS RDS
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: ENC(KbTJMBF/Fqb8EUZ3w1n1OM6KlfqhfVj0D0QM6gYu/Sku47OBotwXRfKlC83IxfyCrNj1Po8zANg5YRd0yd0E26pAev+jixwgKErSC62eOSHGtfmOCSxiNul6thnuxcZ1lgJ6vZUo969aFspXkTWDJzCb/Os38ydgp79hjwvJwv1bD4mvimX+jQ==)
+    #username: root
+    #password: ENC(DWvuHafIMKngMp5WmlLGhWG7z2TLhzdr)
+
+    #TODO 효택 태석
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+    url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
