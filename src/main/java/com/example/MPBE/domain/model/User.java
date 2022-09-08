@@ -32,4 +32,6 @@ public class User extends BaseModel{
     Identity identity;
 
     String company;
+
+    // Todo : User Password 암호화 메소드 추가
 }
