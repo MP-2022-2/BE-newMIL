@@ -6,7 +6,7 @@ spring:
     #username: root
     #password:
 
-    #TODO 효택 태석
+    # 태석 LOCAL
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 1234
