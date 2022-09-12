@@ -1,4 +1,4 @@
-package com.example.MPBE.domain.model;
+package com.example.MPBE.util;
 
 public enum Identity {
     ADMIN, STUDENT, GRADUATE
