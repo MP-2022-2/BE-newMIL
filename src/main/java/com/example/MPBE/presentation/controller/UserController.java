@@ -1,7 +1,9 @@
 package com.example.MPBE.presentation.controller;
 
+import com.example.MPBE.service.request.EmailCertificationReq;
 import com.example.MPBE.service.request.SignUpReq;
 import com.example.MPBE.service.response.BaseResponse;
+import com.example.MPBE.service.service.MailService;
 import com.example.MPBE.service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @RestController
@@ -17,6 +20,7 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+    private final MailService mailService;
 
     @PostMapping("/signup")
     public ResponseEntity<? extends BaseResponse> addUser(@Valid @RequestBody SignUpReq signUpReq){
@@ -31,5 +35,13 @@ public class UserController {
         signUpReq.setPassword(userService.encryptPassword(signUpReq.getPassword()));
         userService.save(signUpReq);
         return ResponseEntity.status(201).body(new BaseResponse("회원가입이 완료되었습니다.",201));
+    }
+
+    @PostMapping("/certification")
+    public ResponseEntity<? extends BaseResponse> sendEmailCertifiaction(@RequestBody EmailCertificationReq emailCertificationReq)
+            throws MessagingException {
+        String code = "12345678";
+        mailService.sendSignUpCertificationMail(emailCertificationReq.getEmail(), code);
+        return ResponseEntity.status(201).body(new BaseResponse("인증코드 발송을 완료했습니다.", 201));
     }
 }
