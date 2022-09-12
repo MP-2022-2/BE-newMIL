@@ -1,9 +1,12 @@
 package com.example.MPBE.domain.model;
 
+import com.example.MPBE.util.Identity;
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+
+
 
 @Entity
 @Builder
