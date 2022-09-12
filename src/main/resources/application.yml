@@ -22,6 +22,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ajouunivmedia@gmail.com
+    password: ENC(J9SyZ8O7iJ7GOtYWlin9rxgyQjfgpCvXuaBWf3B6cro=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 
 jwt:
   secret: ENC(0eo96hvRaBhDj2MKmNaXP7Jtmgyiul4znowNcHoNGfwN9axHt2p4MuRU54XbMEKFk5VCPcgNtpQb2El9s3d0JykDDduAR324G3Tj+3tLd6E293uT30TYm4+J2Xr+Luk9DPE0UplhamM=)
