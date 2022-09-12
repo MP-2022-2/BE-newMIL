@@ -1,8 +1,10 @@
 package com.example.MPBE.presentation.controller;
 
 import com.example.MPBE.service.request.EmailCertificationReq;
+import com.example.MPBE.service.request.EmailVerificationReq;
 import com.example.MPBE.service.request.SignUpReq;
 import com.example.MPBE.service.response.BaseResponse;
+import com.example.MPBE.service.service.CertificationService;
 import com.example.MPBE.service.service.MailService;
 import com.example.MPBE.service.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
     private final MailService mailService;
+    private final CertificationService certificationService;
 
     @PostMapping("/signup")
     public ResponseEntity<? extends BaseResponse> addUser(@Valid @RequestBody SignUpReq signUpReq){
@@ -40,8 +43,15 @@ public class UserController {
     @PostMapping("/certification")
     public ResponseEntity<? extends BaseResponse> sendEmailCertifiaction(@RequestBody EmailCertificationReq emailCertificationReq)
             throws MessagingException {
-        String code = "12345678";
-        mailService.sendSignUpCertificationMail(emailCertificationReq.getEmail(), code);
+        String randomCode = certificationService.makeCertificationCode(emailCertificationReq.getEmail());
+        mailService.sendSignUpCertificationMail(emailCertificationReq.getEmail(), randomCode);
         return ResponseEntity.status(201).body(new BaseResponse("인증코드 발송을 완료했습니다.", 201));
+    }
+
+    @PostMapping("/verification")
+    public ResponseEntity<? extends BaseResponse> verifyEmailCertification(@RequestBody EmailVerificationReq emailVerificationReq) {
+        if(certificationService.verifyCertificationCode(emailVerificationReq.getEmail(),emailVerificationReq.getRandomCode()))
+            return ResponseEntity.status(200).body(new BaseResponse("인증에 성공했습니다.", 200));
+        return ResponseEntity.status(400).body(new BaseResponse("인증을 실패했습니다.", 400));
     }
 }
