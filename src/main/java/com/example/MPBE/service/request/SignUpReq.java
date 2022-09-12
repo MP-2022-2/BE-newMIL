@@ -1,13 +1,10 @@
 package com.example.MPBE.service.request;
 
-import com.example.MPBE.domain.model.Identity;
+import com.example.MPBE.util.Identity;
 import com.example.MPBE.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 
@@ -34,6 +31,10 @@ public class SignUpReq {
     Identity identity;
 
     String company;
+
+    public void setPassword(String password){
+        this.password = password;
+    }
 
     public User toUserModel() {
         return User.builder()

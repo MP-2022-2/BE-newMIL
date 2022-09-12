@@ -27,6 +27,7 @@ public class UserController {
 
         // Todo : 이름 학번 매칭 확인 과정, 이메일 인증 과정 추가
 
+        signUpReq.setPassword(userService.encryptPassword(signUpReq.getPassword()));
         userService.save(signUpReq);
         return ResponseEntity.status(201).body(new BaseResponse("회원가입이 완료되었습니다.",201));
     }
