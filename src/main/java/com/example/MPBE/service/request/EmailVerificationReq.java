@@ -5,8 +5,10 @@ import lombok.Getter;
 import javax.validation.constraints.NotNull;
 
 @Getter
-public class EmailCertificationReq {
+public class EmailVerificationReq {
+    @NotNull
+    String email;
 
-	@NotNull
-	private String email;
+    @NotNull
+    String randomCode;
 }
