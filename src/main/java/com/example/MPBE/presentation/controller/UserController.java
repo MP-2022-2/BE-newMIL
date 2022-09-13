@@ -1,18 +1,18 @@
 package com.example.MPBE.presentation.controller;
 
+import com.example.MPBE.service.dto.TokenDto;
 import com.example.MPBE.service.request.EmailCertificationReq;
 import com.example.MPBE.service.request.EmailVerificationReq;
+import com.example.MPBE.service.request.LoginReq;
 import com.example.MPBE.service.request.SignUpReq;
 import com.example.MPBE.service.response.BaseResponse;
+import com.example.MPBE.service.response.LoginRes;
 import com.example.MPBE.service.service.CertificationService;
 import com.example.MPBE.service.service.MailService;
 import com.example.MPBE.service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -53,5 +53,18 @@ public class UserController {
         if(certificationService.verifyCertificationCode(emailVerificationReq.getEmail(),emailVerificationReq.getRandomCode()))
             return ResponseEntity.status(200).body(new BaseResponse("인증에 성공했습니다.", 200));
         return ResponseEntity.status(400).body(new BaseResponse("인증을 실패했습니다.", 400));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<? extends BaseResponse> loginUser(@Valid @RequestBody LoginReq loginReq) {
+        if(!userService.isExistUserId(loginReq.getUserId()))
+            return ResponseEntity.status(400).body(new BaseResponse("존재하지 않는 ID 입니다.", 400));
+
+        if(!userService.matchPassword(loginReq.getUserId(),loginReq.getPassword()))
+            return ResponseEntity.status(400).body(new BaseResponse("패스워드가 틀렸습니다.", 400));
+
+        TokenDto tokenDto = userService.createToken(loginReq);
+
+        return ResponseEntity.status(200).body(new LoginRes("로그인에 성공했습니다.",200, tokenDto.getAccessToken(),tokenDto.getRefreshToken()));
     }
 }
