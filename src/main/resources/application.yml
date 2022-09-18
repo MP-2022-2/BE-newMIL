@@ -1,16 +1,16 @@
 spring:
   datasource:
-    #    #TODO AWS RDS
-    #driver-class-name: com.mysql.cj.jdbc.Driver
-    #url:
-    #username: root
-    #password:
+    #    TODO AWS RDS
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ENC(fuZON1X7DqtvddUmyL7xlahJh9dmbLLqbKmszeRTY4bp7aDChH6LT7P4zVEtaL1GD2ieyZn4PWLPNdnsdiPw7f8PAR3RJWOOOgPbvO6F5/PXY5Q+jqFc+7Qkdy/1E8l6CZ9nPGjTk3k=)
+    username: mediaproject
+    password: ENC(pC66E1IscyRr+5OSJVSabbZNmqDhrhQ0a0qZK+Gskyw=)
 
-    #TODO 효택 태석
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 1234
-    url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    # 태석 LOCAL(MYSQL)
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+    # username: root
+    # password: 1234
+    # url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -22,6 +22,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ajouunivmedia@gmail.com
+    password: ENC(J9SyZ8O7iJ7GOtYWlin9rxgyQjfgpCvXuaBWf3B6cro=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 
 jwt:
   secret: ENC(0eo96hvRaBhDj2MKmNaXP7Jtmgyiul4znowNcHoNGfwN9axHt2p4MuRU54XbMEKFk5VCPcgNtpQb2El9s3d0JykDDduAR324G3Tj+3tLd6E293uT30TYm4+J2Xr+Luk9DPE0UplhamM=)

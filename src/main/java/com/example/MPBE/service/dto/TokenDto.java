@@ -1,4 +1,4 @@
-package com.example.MPBE.util.jwt;
+package com.example.MPBE.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
