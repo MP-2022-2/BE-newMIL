@@ -36,6 +36,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
+bootRun {
+    systemProperty "jasypt.encryptor.password", findProperty("jasypt.encryptor.password")
+}
+
 test {
 	useJUnitPlatform()
 	systemProperty "jasypt.encryptor.password", System.getProperties().get("jasypt.encryptor.password")
