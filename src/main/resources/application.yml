@@ -1,16 +1,16 @@
 spring:
   datasource:
-    #    #TODO AWS RDS
-    #driver-class-name: com.mysql.cj.jdbc.Driver
-    #url:
-    #username: root
-    #password:
+    #    TODO AWS RDS
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ENC(fuZON1X7DqtvddUmyL7xlahJh9dmbLLqbKmszeRTY4bp7aDChH6LT7P4zVEtaL1GD2ieyZn4PWLPNdnsdiPw7f8PAR3RJWOOOgPbvO6F5/PXY5Q+jqFc+7Qkdy/1E8l6CZ9nPGjTk3k=)
+    username: mediaproject
+    password: ENC(pC66E1IscyRr+5OSJVSabbZNmqDhrhQ0a0qZK+Gskyw=)
 
     # 태석 LOCAL(MYSQL)
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 1234
-    url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+    # username: root
+    # password: 1234
+    # url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
