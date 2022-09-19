@@ -54,6 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스 적용
 				.and()
 				.apply(new JwtSecurityConfig(tokenProvider))
+
+				// CORS 사용
 				.and()
 				.cors();
 	}
@@ -61,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 
-		configuration.addAllowedOrigin("*");
+		configuration.addAllowedOriginPattern("*");
 		configuration.addAllowedHeader("*");
 		configuration.addAllowedMethod("*");
 		configuration.setAllowCredentials(true);
