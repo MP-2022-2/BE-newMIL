@@ -21,8 +21,7 @@ public class CertificationService {
 
 	public boolean verifyCertificationCode(String email, String randomCode) {
 		String byRedisRandomCode = redisUtil.getData(email);
-		System.out.println("REDIS : "+byRedisRandomCode);
-		System.out.println("REQ : "+randomCode);
+		if(byRedisRandomCode == null) return false;
 		if(byRedisRandomCode.equals(randomCode)) return true;
 		return false;
 	}
