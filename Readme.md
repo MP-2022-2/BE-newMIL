@@ -7,3 +7,5 @@
 **-응집성을 높이고 의존성을 낮추자.**
 
 **-Naming에 신경쓰자.(camelCase 따르기)**
+
+**-Service Layer는 Presentation Layer을, Domain Layer는 Service Layer을 알아선 안된다.**
