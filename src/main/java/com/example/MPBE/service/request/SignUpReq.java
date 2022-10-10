@@ -1,7 +1,8 @@
 package com.example.MPBE.service.request;
 
-import com.example.MPBE.util.Identity;
+import com.example.MPBE.util.enums.Identity;
 import com.example.MPBE.domain.model.User;
+import com.example.MPBE.util.enums.Track;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,9 @@ public class SignUpReq {
 
     String company;
 
+    @NotNull
+    Track track;
+
     public void setPassword(String password){
         this.password = password;
     }
@@ -45,6 +49,7 @@ public class SignUpReq {
                 .studentId(studentId)
                 .userId(userId)
                 .company(company)
+                .track(track)
                 .build();
     }
 }

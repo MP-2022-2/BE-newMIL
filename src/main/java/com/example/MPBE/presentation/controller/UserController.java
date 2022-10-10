@@ -1,12 +1,11 @@
 package com.example.MPBE.presentation.controller;
 
+import com.example.MPBE.service.dto.InfoDto;
 import com.example.MPBE.service.dto.TokenDto;
-import com.example.MPBE.service.request.EmailCertificationReq;
-import com.example.MPBE.service.request.EmailVerificationReq;
-import com.example.MPBE.service.request.LoginReq;
-import com.example.MPBE.service.request.SignUpReq;
+import com.example.MPBE.service.request.*;
 import com.example.MPBE.service.response.BaseResponse;
 import com.example.MPBE.service.response.LoginRes;
+import com.example.MPBE.service.response.MyInfoRes;
 import com.example.MPBE.service.service.CertificationService;
 import com.example.MPBE.service.service.MailService;
 import com.example.MPBE.service.service.UserService;
@@ -66,5 +65,17 @@ public class UserController {
         TokenDto tokenDto = userService.createToken(loginReq);
 
         return ResponseEntity.status(200).body(new LoginRes("로그인에 성공했습니다.",200, tokenDto.getAccessToken(),tokenDto.getRefreshToken()));
+    }
+
+    @GetMapping("/mine")
+    public ResponseEntity<? extends BaseResponse> getInfo() {
+        InfoDto infoDto = userService.getMyInfo();
+        return ResponseEntity.status(200).body(new MyInfoRes("유저 정보를 가져왔습니다.", 200, infoDto));
+    }
+
+    @PutMapping("/mine/newinfo")
+    public ResponseEntity<? extends BaseResponse> updateInfo(@RequestBody UpdateMyInfoReq updateMyInfoReq) {
+        userService.update(updateMyInfoReq);
+        return ResponseEntity.status(201).body(new BaseResponse("수정이 완료되었습니다.", 201));
     }
 }
