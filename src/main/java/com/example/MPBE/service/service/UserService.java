@@ -6,10 +6,14 @@ import com.example.MPBE.domain.model.User;
 import com.example.MPBE.domain.repository.MediaStudentRepository;
 import com.example.MPBE.domain.repository.RefreshTokenRepository;
 import com.example.MPBE.domain.repository.UserRepository;
+import com.example.MPBE.service.dto.InfoDto;
 import com.example.MPBE.service.dto.TokenDto;
 import com.example.MPBE.service.request.LoginReq;
 import com.example.MPBE.service.request.SignUpReq;
+import com.example.MPBE.service.request.UpdateMyInfoReq;
+import com.example.MPBE.util.enums.Track;
 import com.example.MPBE.util.jwt.TokenProvider;
+import com.example.MPBE.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +21,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +36,12 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
 
+    private User findCurrentUser(){
+        User user = userRepository.findById(SecurityUtil.getCurrentUserId())
+                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+
+        return user;
+    }
     public boolean isExistEmail(String email) {
         User byEmail = userRepository.findByEmail(email).orElse(null);
         return byEmail != null;
@@ -56,6 +68,24 @@ public class UserService {
 
     public void save(SignUpReq signUpReq) {
         userRepository.save(signUpReq.toUserModel());
+    }
+
+    public InfoDto getMyInfo() {
+        User user = findCurrentUser();
+        return InfoDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .studentId(user.getStudentId())
+                .track(user.getTrack())
+                .build();
+    }
+
+    @Transactional
+    public void update(UpdateMyInfoReq updateMyInfoReq){
+        User user = findCurrentUser();
+        String company = updateMyInfoReq.getCompany();
+        Track track = updateMyInfoReq.getTrack();
+        user.updateMyInfo(company,track);
     }
 
     public TokenDto createToken(LoginReq loginReq) {

@@ -1,6 +1,7 @@
 package com.example.MPBE.domain.model;
 
-import com.example.MPBE.util.Identity;
+import com.example.MPBE.util.enums.Identity;
+import com.example.MPBE.util.enums.Track;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -36,5 +37,12 @@ public class User extends BaseModel{
 
     String company;
 
+    @NotNull
+    Track track;
+
+    public void updateMyInfo(String company, Track track){
+        this.company = company;
+        this.track = track;
+    }
     // Todo : User Password 암호화 메소드 추가
 }
