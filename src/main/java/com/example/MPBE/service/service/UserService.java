@@ -70,6 +70,15 @@ public class UserService {
         userRepository.save(signUpReq.toUserModel());
     }
 
+    public InfoDto getLoginInfo(String userId){
+        User user = userRepository.findByUserId(userId).orElse(null);
+        return InfoDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .studentId(user.getStudentId())
+                .track(user.getTrack())
+                .build();
+    }
     public InfoDto getMyInfo() {
         User user = findCurrentUser();
         return InfoDto.builder()

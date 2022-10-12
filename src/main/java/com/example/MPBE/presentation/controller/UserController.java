@@ -64,7 +64,9 @@ public class UserController {
 
         TokenDto tokenDto = userService.createToken(loginReq);
 
-        return ResponseEntity.status(200).body(new LoginRes("로그인에 성공했습니다.",200, tokenDto.getAccessToken(),tokenDto.getRefreshToken()));
+        InfoDto infoDto = userService.getLoginInfo(loginReq.getUserId());
+
+        return ResponseEntity.status(200).body(new LoginRes("로그인에 성공했습니다.",200, infoDto, tokenDto.getAccessToken(),tokenDto.getRefreshToken()));
     }
 
     @GetMapping("/mine")
