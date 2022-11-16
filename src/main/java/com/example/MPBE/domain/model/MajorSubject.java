@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject extends BaseModel{
+public class MajorSubject extends BaseModel{
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,9 +23,6 @@ public class Subject extends BaseModel{
 
     @NotNull
     String subject;
-
-    @NotNull
-    Boolean isMajor;
 
     //과목당 학점
     @NotNull

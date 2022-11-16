@@ -5,14 +5,14 @@ import com.example.MPBE.service.request.SubjectRegistrationReq;
 import com.example.MPBE.service.response.BaseResponse;
 import com.example.MPBE.service.response.SubjectListRes;
 import com.example.MPBE.service.service.SubjectService;
+import com.example.MPBE.util.enums.Subject;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,22 +21,22 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     @PostMapping("/registration")
-    public ResponseEntity<? extends BaseResponse> addSubject(@Valid @RequestBody SubjectRegistrationReq subjectRegistrationReq){
-        subjectService.save(subjectRegistrationReq.getStudentId(),subjectRegistrationReq.getSubjectList());
+    public ResponseEntity<? extends BaseResponse> addSubjectWhenSignUp(@Valid @RequestBody SubjectRegistrationReq subjectRegistrationReq){
+        subjectService.saveWhenSignUp(subjectRegistrationReq.getStudentId(),subjectRegistrationReq.getSubjectList());
+        return ResponseEntity.status(201).body(new BaseResponse("수강 과목 등록에 성공했습니다.",201));
+    }
+
+    @PostMapping("/registration/{major-or-non-major}")
+    public ResponseEntity<? extends BaseResponse> addSubject(@Valid @PathVariable(value = "major-or-non-major") String majorOrNot, @RequestBody SubjectRegistrationReq subjectRegistrationReq) throws IllegalAccessException {
+        boolean isMajor = Subject.verify(majorOrNot);
+        subjectService.saveWhenLogined(subjectRegistrationReq.getSubjectList(),isMajor);
         return ResponseEntity.status(201).body(new BaseResponse("수강 과목 등록에 성공했습니다.",201));
     }
 
     @GetMapping("/mypage")
     public ResponseEntity<? extends BaseResponse> getSubject(){
-        List<SubjectDto> subjectDtoList = subjectService.mySubject();
-        return ResponseEntity.status(200).body(new SubjectListRes("수강 과목 조회에 성공했습니다.",200,subjectDtoList));
+        List<SubjectDto> majorSubjectDtoList = subjectService.myMajorSubject();
+        List<SubjectDto> nonMajorSubjectDtoList = subjectService.myNonMajorSubject();
+        return ResponseEntity.status(200).body(new SubjectListRes("수강 과목 조회에 성공했습니다.",200,majorSubjectDtoList,nonMajorSubjectDtoList));
     }
-
-//    @GetMapping("/mypage")
-//    public Map<String,Object> getSubject(){
-//        List<SubjectDto> subjectDtoList = subjectService.mySubject();
-//        Map<String,Object> subjectList = new HashMap<>();
-//        subjectList.put("subject",subjectDtoList);
-//        return subjectList;
-//    }
  }

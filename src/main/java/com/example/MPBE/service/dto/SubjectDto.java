@@ -1,6 +1,7 @@
 package com.example.MPBE.service.dto;
 
-import com.example.MPBE.domain.model.Subject;
+import com.example.MPBE.domain.model.MajorSubject;
+import com.example.MPBE.domain.model.NonMajorSubject;
 import com.example.MPBE.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,24 +15,33 @@ import lombok.NoArgsConstructor;
 public class SubjectDto {
     String subject;
 
-    Boolean isMajor;
-
     Integer gpa;
 
-    public Subject toModel(User user){
-        Subject subject = Subject.builder()
+    public MajorSubject toMajorModel(User user){
+        MajorSubject majorSubject = MajorSubject.builder()
                 .user(user)
                 .subject(this.subject)
-                .isMajor(this.isMajor)
                 .gpa(this.gpa)
                 .build();
-        user.addSubject(subject);
-        return subject;
+        user.addMajorSubject(majorSubject);
+        return majorSubject;
+    }
+    public NonMajorSubject toNonMajorModel(User user){
+        NonMajorSubject nonMajorSubject = NonMajorSubject.builder()
+                .user(user)
+                .subject(this.subject)
+                .gpa(this.gpa)
+                .build();
+        user.addNonMajorSubject(nonMajorSubject);
+        return nonMajorSubject;
+    }
+    public SubjectDto(MajorSubject majorSubject){
+        this.subject = majorSubject.getSubject();
+        this.gpa = majorSubject.getGpa();
     }
 
-    public SubjectDto(Subject subject){
-        this.subject = subject.getSubject();
-        this.isMajor = subject.getIsMajor();
-        this.gpa = subject.getGpa();
+    public SubjectDto(NonMajorSubject nonMajorSubject){
+        this.subject = nonMajorSubject.getSubject();
+        this.gpa = nonMajorSubject.getGpa();
     }
 }

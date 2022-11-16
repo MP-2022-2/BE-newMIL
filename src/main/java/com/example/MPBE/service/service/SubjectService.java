@@ -1,17 +1,17 @@
 package com.example.MPBE.service.service;
 
-import com.example.MPBE.domain.model.Subject;
 import com.example.MPBE.domain.model.User;
-import com.example.MPBE.domain.repository.SubjectRepository;
+import com.example.MPBE.domain.repository.MajorSubjectRepository;
+import com.example.MPBE.domain.repository.NonMajorSubjectRepository;
 import com.example.MPBE.domain.repository.UserRepository;
 import com.example.MPBE.service.dto.SubjectDto;
+import com.example.MPBE.util.enums.Subject;
 import com.example.MPBE.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SubjectService {
     private final UserRepository userRepository;
-    private final SubjectRepository subjectRepository;
+    private final MajorSubjectRepository majorSubjectRepository;
+    private final NonMajorSubjectRepository nonMajorSubjectRepository;
 
     private User findCurrentUser(){
         User user = userRepository.findById(SecurityUtil.getCurrentUserId())
@@ -29,19 +30,45 @@ public class SubjectService {
         return user;
     }
 
-    @Transactional
-    public void save(Integer studentId, List<SubjectDto> subjectDtoList){
-        User user = userRepository.findByStudentId(studentId).orElse(null);
-        for(SubjectDto subjectDto : subjectDtoList) {
-            subjectRepository.save(subjectDto.toModel(user));
+    private void save(User user, List<SubjectDto> subjectDtoList, boolean isMajor){
+
+        if(isMajor){
+            for(SubjectDto subjectDto : subjectDtoList) {
+                majorSubjectRepository.save(subjectDto.toMajorModel(user));
+            }
+        }
+        else {
+            for(SubjectDto subjectDto : subjectDtoList) {
+                nonMajorSubjectRepository.save(subjectDto.toNonMajorModel(user));
+            }
         }
     }
 
     @Transactional
-    public List<SubjectDto> mySubject(){
+    public void saveWhenSignUp(Integer studentId, List<SubjectDto> subjectDtoList){
+        User user = userRepository.findByStudentId(studentId).orElse(null);
+        save(user,subjectDtoList,true);
+    }
+
+    @Transactional
+    public void saveWhenLogined(List<SubjectDto> subjectDtoList, boolean isMajor){
         User user = findCurrentUser();
-        if(user.getSubjectList() == null) return null;
-        List<SubjectDto> subjectDtoList = user.getSubjectList().stream().map(subject -> new SubjectDto(subject)).collect(Collectors.toList());
-        return subjectDtoList;
+        save(user,subjectDtoList,isMajor);
+    }
+
+    @Transactional
+    public List<SubjectDto> myMajorSubject(){
+        User user = findCurrentUser();
+        if(user.getMajorSubjectList() == null) return null;
+        List<SubjectDto> majorSubjectDtoList = user.getMajorSubjectList().stream().map(majorSubject -> new SubjectDto(majorSubject)).collect(Collectors.toList());
+        return majorSubjectDtoList;
+    }
+
+    @Transactional
+    public List<SubjectDto> myNonMajorSubject(){
+        User user = findCurrentUser();
+        if(user.getMajorSubjectList() == null) return null;
+        List<SubjectDto> nonMajorSubjectDtoList = user.getNonMajorSubjectList().stream().map(nonMajorSubject -> new SubjectDto(nonMajorSubject)).collect(Collectors.toList());
+        return nonMajorSubjectDtoList;
     }
 }

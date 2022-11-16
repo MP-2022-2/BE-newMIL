@@ -48,13 +48,23 @@ public class User extends BaseModel{
     Track track;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<Subject> subjectList;
-    public void addSubject(Subject subject) {
-        if (this.subjectList == null) {
-            this.subjectList = new LinkedList<>();
+    List<MajorSubject> majorSubjectList;
+    public void addMajorSubject(MajorSubject majorSubject) {
+        if (this.majorSubjectList == null) {
+            this.majorSubjectList = new LinkedList<>();
         }
-        this.subjectList.add(subject);
-        subject.setUser(this);
+        this.majorSubjectList.add(majorSubject);
+        majorSubject.setUser(this);
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<NonMajorSubject> nonMajorSubjectList;
+    public void addNonMajorSubject(NonMajorSubject nonMajorSubject) {
+        if (this.nonMajorSubjectList == null) {
+            this.nonMajorSubjectList = new LinkedList<>();
+        }
+        this.nonMajorSubjectList.add(nonMajorSubject);
+        nonMajorSubject.setUser(this);
     }
 
     public void updateMyInfo(String company, Track track){
