@@ -57,6 +57,8 @@ public class User extends BaseModel{
         majorSubject.setUser(this);
     }
 
+    //public void removeMajorSubject()
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<NonMajorSubject> nonMajorSubjectList;
     public void addNonMajorSubject(NonMajorSubject nonMajorSubject) {

@@ -5,7 +5,6 @@ import com.example.MPBE.domain.repository.MajorSubjectRepository;
 import com.example.MPBE.domain.repository.NonMajorSubjectRepository;
 import com.example.MPBE.domain.repository.UserRepository;
 import com.example.MPBE.service.dto.SubjectDto;
-import com.example.MPBE.util.enums.Subject;
 import com.example.MPBE.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,18 +29,20 @@ public class SubjectService {
         return user;
     }
 
-    private void save(User user, List<SubjectDto> subjectDtoList, boolean isMajor){
-
+    private boolean save(User user, List<SubjectDto> subjectDtoList, boolean isMajor){
         if(isMajor){
             for(SubjectDto subjectDto : subjectDtoList) {
+                if(majorSubjectRepository.findByUserAndSubject(user,subjectDto.getSubject()).orElse(null)!=null) return false;
                 majorSubjectRepository.save(subjectDto.toMajorModel(user));
             }
         }
         else {
             for(SubjectDto subjectDto : subjectDtoList) {
+                if(nonMajorSubjectRepository.findByUserAndSubject(user,subjectDto.getSubject()).orElse(null)!=null) return false;
                 nonMajorSubjectRepository.save(subjectDto.toNonMajorModel(user));
             }
         }
+        return true;
     }
 
     @Transactional
@@ -51,9 +52,9 @@ public class SubjectService {
     }
 
     @Transactional
-    public void saveWhenLogined(List<SubjectDto> subjectDtoList, boolean isMajor){
+    public boolean saveWhenLogined(List<SubjectDto> subjectDtoList, boolean isMajor){
         User user = findCurrentUser();
-        save(user,subjectDtoList,isMajor);
+        return save(user,subjectDtoList,isMajor);
     }
 
     @Transactional
@@ -70,5 +71,19 @@ public class SubjectService {
         if(user.getMajorSubjectList() == null) return null;
         List<SubjectDto> nonMajorSubjectDtoList = user.getNonMajorSubjectList().stream().map(nonMajorSubject -> new SubjectDto(nonMajorSubject)).collect(Collectors.toList());
         return nonMajorSubjectDtoList;
+    }
+
+    @Transactional
+    public boolean deleteMySubject(String subject, Boolean isMajor){
+        User user = findCurrentUser();
+        if(user.getMajorSubjectList() == null) return false;
+
+        if(isMajor){
+            majorSubjectRepository.deleteByUserAndSubject(user,subject);
+        }
+        else{
+            nonMajorSubjectRepository.deleteByUserAndSubject(user,subject);
+        }
+        return true;
     }
 }
