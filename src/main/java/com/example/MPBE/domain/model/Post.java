@@ -1,5 +1,6 @@
 package com.example.MPBE.domain.model;
 
+import com.example.MPBE.util.enums.BoardType;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,12 +11,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Board extends BaseModel{
+@Builder
+public class Post extends BaseModel{
+    @NotNull
+    BoardType boardType;
+
     @NotNull
     String title;
 
@@ -31,23 +35,23 @@ public class Board extends BaseModel{
     @JoinColumn
     User user;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     List<Comment> commentList;
     public void addComment(Comment comment) {
         if (this.commentList == null) {
             this.commentList = new LinkedList<>();
         }
         this.commentList.add(comment);
-        comment.setBoard(this);
+        comment.setPost(this);
     }
 
-    @OneToMany(mappedBy = "like", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     List<Like> likeList;
     public void addLike(Like like){
         if (this.likeList == null) {
             this.likeList = new LinkedList<>();
         }
         this.likeList.add(like);
-        like.setBoard(this);
+        like.setPost(this);
     }
 }

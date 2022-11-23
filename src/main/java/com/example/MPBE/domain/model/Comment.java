@@ -29,6 +29,6 @@ public class Comment extends BaseModel{
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    Board board;
+    Post post;
 
 }

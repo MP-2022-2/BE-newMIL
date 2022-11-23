@@ -67,6 +67,36 @@ public class User extends BaseModel{
         nonMajorSubject.setUser(this);
     }
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Post> postList;
+    public void addBoard(Post post) {
+        if(this.postList == null) {
+            this.postList = new LinkedList<>();
+        }
+        this.postList.add(post);
+        post.setUser(this);
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Post> likeList;
+    public void addLike(Like like) {
+        if(this.likeList == null) {
+            this.likeList = new LinkedList<>();
+        }
+        this.likeList.add(like.getPost());
+        like.setUser(this);
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Comment> commentList;
+    public void addComment(Comment comment) {
+        if(this.commentList == null) {
+            this.commentList = new LinkedList<>();
+        }
+        this.commentList.add(comment);
+        comment.setUser(this);
+    }
+
     public void updateMyInfo(String company, Track track){
         this.company = company;
         this.track = track;
