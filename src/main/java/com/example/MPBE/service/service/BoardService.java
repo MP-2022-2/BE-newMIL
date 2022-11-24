@@ -5,6 +5,7 @@ import com.example.MPBE.domain.model.User;
 import com.example.MPBE.domain.repository.*;
 import com.example.MPBE.service.dto.CommentDto;
 import com.example.MPBE.service.dto.PostDto;
+import com.example.MPBE.service.request.CommentReq;
 import com.example.MPBE.service.request.PostReq;
 import com.example.MPBE.util.enums.BoardType;
 import com.example.MPBE.util.security.SecurityUtil;
@@ -54,7 +55,9 @@ public class BoardService {
     }
 
     @Transactional
-    public List<CommentDto> getPostComments(Long postId){
-        return commentRepository.findAllByPostId(postId).stream().map(s -> new CommentDto(s)).collect(Collectors.toList());
+    public void addComment(Long postId, CommentReq commentReq){
+        User user = findCurrentUser();
+        Post post = postRepository.findById(postId).orElse(null);
+        commentRepository.save(commentReq.toModel(user,post));
     }
 }

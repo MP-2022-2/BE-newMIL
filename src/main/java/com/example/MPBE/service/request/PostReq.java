@@ -24,10 +24,6 @@ public class PostReq {
     @NotNull
     String content;
 
-    User user;
-
-
-
     public Post toModel(User user){
         Post post = Post.builder()
                 .user(user)

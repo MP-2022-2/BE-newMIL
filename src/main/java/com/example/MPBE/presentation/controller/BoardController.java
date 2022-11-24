@@ -1,7 +1,7 @@
 package com.example.MPBE.presentation.controller;
 
-import com.example.MPBE.service.dto.CommentDto;
 import com.example.MPBE.service.dto.PostDto;
+import com.example.MPBE.service.request.CommentReq;
 import com.example.MPBE.service.request.PostReq;
 import com.example.MPBE.service.response.BaseResponse;
 import com.example.MPBE.service.response.PostListReq;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +29,15 @@ public class BoardController {
     @GetMapping("/free")
     public ResponseEntity<? extends BaseResponse> getPosts(@Valid Pageable pageable){
         return ResponseEntity.status(200).body(new PostListReq("글 목록 조회 완료",200,boardService.getFreeBoardAll(pageable)));
+    }
+
+    @PostMapping("/free/{id}/comment")
+    public ResponseEntity<? extends BaseResponse> addComment(@Valid @PathVariable(value = "id") Long postId,
+                                                             @RequestBody CommentReq commentReq){
+        if(!boardService.isExistPost(postId))
+            return ResponseEntity.status(404).body(new BaseResponse("해당 게시글이 존재하지 않습니다.",404));
+        boardService.addComment(postId, commentReq);
+        return ResponseEntity.status(201).body(new BaseResponse("댓글 작성 완료.",201));
     }
 
     @GetMapping("/free/{id}")
