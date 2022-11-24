@@ -1,22 +1,15 @@
 package com.example.MPBE.service.dto;
 
 import com.example.MPBE.domain.model.Post;
-import com.example.MPBE.domain.model.User;
-import com.example.MPBE.util.enums.BoardType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.sun.istack.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class PostDto {
     @NotNull
-    BoardType boardType;
+    Long id;
 
     @NotNull
     String title;
@@ -24,14 +17,25 @@ public class PostDto {
     @NotNull
     String content;
 
-    public Post toModel(User user){
-        Post post = Post.builder()
-                .user(user)
-                .title(this.title)
-                .content(this.content)
-                .boardType(this.boardType)
-                .build();
-        user.addBoard(post);
-        return post;
+    @NotNull
+    Date createdAt;
+
+    @NotNull
+    String nickname;
+
+    @NotNull
+    Integer like;
+
+    @NotNull
+    Integer comment;
+
+    public PostDto(Post post){
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.createdAt = post.getCreatedAt();
+        this.nickname = post.getUser().getNickName();
+        this.like = post.getPostLikeList().size();
+        this.comment = post.getCommentList().size();
     }
 }

@@ -2,11 +2,10 @@ package com.example.MPBE.domain.model;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Builder
@@ -14,7 +13,11 @@ import javax.persistence.ManyToOne;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like extends BaseModel{
+public class PostLike extends BaseModel{
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    Date createdAt;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

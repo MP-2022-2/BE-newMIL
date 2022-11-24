@@ -18,6 +18,7 @@ import java.util.List;
 @Builder
 public class Post extends BaseModel{
     @NotNull
+    @Enumerated(EnumType.STRING)
     BoardType boardType;
 
     @NotNull
@@ -36,7 +37,7 @@ public class Post extends BaseModel{
     User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    List<Comment> commentList;
+    List<Comment> commentList = new LinkedList<>();
     public void addComment(Comment comment) {
         if (this.commentList == null) {
             this.commentList = new LinkedList<>();
@@ -46,12 +47,12 @@ public class Post extends BaseModel{
     }
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    List<Like> likeList;
-    public void addLike(Like like){
-        if (this.likeList == null) {
-            this.likeList = new LinkedList<>();
+    List<PostLike> postLikeList = new LinkedList<>();
+    public void addLike(PostLike postLike){
+        if (this.postLikeList == null) {
+            this.postLikeList = new LinkedList<>();
         }
-        this.likeList.add(like);
-        like.setPost(this);
+        this.postLikeList.add(postLike);
+        postLike.setPost(this);
     }
 }

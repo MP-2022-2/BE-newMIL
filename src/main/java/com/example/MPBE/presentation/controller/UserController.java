@@ -30,9 +30,10 @@ public class UserController {
             return ResponseEntity.status(409).body(new BaseResponse("이미 존재하는 ID 입니다.", 409));
         if(userService.isExistEmail(signUpReq.getEmail()))
             return ResponseEntity.status(409).body(new BaseResponse("이미 존재하는 Email 입니다.", 409));
+        if(userService.isExistNickName(signUpReq.getNickName()))
+            return ResponseEntity.status(409).body(new BaseResponse("이미 존재하는 닉네임 입니다.", 409));
         if(!userService.isMediaStudent(signUpReq.getName(), signUpReq.getStudentId()))
             return ResponseEntity.status(401).body(new BaseResponse("미디어학과 학생이 아닙니다.", 401));
-        // Todo : 이메일 인증 과정 추가
 
         signUpReq.setPassword(userService.encryptPassword(signUpReq.getPassword()));
         userService.save(signUpReq);

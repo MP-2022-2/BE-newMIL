@@ -4,10 +4,7 @@ import com.example.MPBE.util.enums.Identity;
 import com.example.MPBE.util.enums.Track;
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +27,10 @@ public class User extends BaseModel{
 
     @NotNull
     @Column(unique = true)
+    String nickName;
+
+    @NotNull
+    @Column(unique = true)
     String email;
 
     @NotNull
@@ -45,6 +46,7 @@ public class User extends BaseModel{
     String company;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     Track track;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -78,17 +80,17 @@ public class User extends BaseModel{
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<Post> likeList;
-    public void addLike(Like like) {
+    List<Post> likeList = new LinkedList<>();
+    public void addLike(PostLike postLike) {
         if(this.likeList == null) {
             this.likeList = new LinkedList<>();
         }
-        this.likeList.add(like.getPost());
-        like.setUser(this);
+        this.likeList.add(postLike.getPost());
+        postLike.setUser(this);
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<Comment> commentList;
+    List<Comment> commentList = new LinkedList<>();
     public void addComment(Comment comment) {
         if(this.commentList == null) {
             this.commentList = new LinkedList<>();
