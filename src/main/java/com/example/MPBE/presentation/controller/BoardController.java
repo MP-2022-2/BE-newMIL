@@ -1,8 +1,11 @@
 package com.example.MPBE.presentation.controller;
 
+import com.example.MPBE.service.dto.CommentDto;
+import com.example.MPBE.service.dto.PostDto;
 import com.example.MPBE.service.request.PostReq;
 import com.example.MPBE.service.response.BaseResponse;
 import com.example.MPBE.service.response.PostListReq;
+import com.example.MPBE.service.response.PostRes;
 import com.example.MPBE.service.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,5 +30,13 @@ public class BoardController {
     @GetMapping("/free")
     public ResponseEntity<? extends BaseResponse> getPosts(@Valid Pageable pageable){
         return ResponseEntity.status(200).body(new PostListReq("글 목록 조회 완료",200,boardService.getFreeBoardAll(pageable)));
+    }
+
+    @GetMapping("/free/{id}")
+    public ResponseEntity<? extends BaseResponse> getPost(@Valid @PathVariable(value = "id") Long postId){
+        if(!boardService.isExistPost(postId))
+            return ResponseEntity.status(404).body(new BaseResponse("해당 게시글이 존재하지 않습니다.",404));
+        PostDto postDto = boardService.getPost(postId);
+        return ResponseEntity.status(200).body(new PostRes("게시글 조회에 성공했습니다.",200,postDto));
     }
 }

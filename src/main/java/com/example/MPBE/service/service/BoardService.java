@@ -3,6 +3,7 @@ package com.example.MPBE.service.service;
 import com.example.MPBE.domain.model.Post;
 import com.example.MPBE.domain.model.User;
 import com.example.MPBE.domain.repository.*;
+import com.example.MPBE.service.dto.CommentDto;
 import com.example.MPBE.service.dto.PostDto;
 import com.example.MPBE.service.request.PostReq;
 import com.example.MPBE.util.enums.BoardType;
@@ -21,12 +22,17 @@ import java.util.stream.Collectors;
 public class BoardService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final PostLikeRepository postLikeRepository;
 
     private User findCurrentUser(){
         User user = userRepository.findById(SecurityUtil.getCurrentUserId())
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
         return user;
+    }
+
+    public boolean isExistPost(Long id){
+        return postRepository.existsById(id);
     }
 
     @Transactional
@@ -40,5 +46,15 @@ public class BoardService {
     public List<PostDto> getFreeBoardAll(Pageable pageable) {
         Page<Post> freePostList = postRepository.findAllByBoardType(BoardType.FREE,pageable);
         return freePostList.toList().stream().map(s -> new PostDto(s)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public PostDto getPost(Long postId){
+        return new PostDto(postRepository.findById(postId).orElse(null));
+    }
+
+    @Transactional
+    public List<CommentDto> getPostComments(Long postId){
+        return commentRepository.findAllByPostId(postId).stream().map(s -> new CommentDto(s)).collect(Collectors.toList());
     }
 }

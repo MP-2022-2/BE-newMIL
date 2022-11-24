@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByBoardType(BoardType boardType, Pageable pageable);
-    long countByBoardType(BoardType boardType);
+    boolean existsById(Long id);
+
 }

@@ -5,6 +5,8 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class PostDto {
@@ -29,6 +31,8 @@ public class PostDto {
     @NotNull
     Integer comment;
 
+    List<CommentDto> commentDtoList;
+
     public PostDto(Post post){
         this.id = post.getId();
         this.title = post.getTitle();
@@ -37,5 +41,6 @@ public class PostDto {
         this.nickname = post.getUser().getNickName();
         this.like = post.getPostLikeList().size();
         this.comment = post.getCommentList().size();
+        this.commentDtoList = post.getCommentList().stream().map(e -> new CommentDto(e)).collect(Collectors.toList());
     }
 }
