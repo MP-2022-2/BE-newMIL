@@ -20,6 +20,9 @@ public class SignUpReq {
     String name;
 
     @NotNull
+    String nickName;
+
+    @NotNull
     String email;
 
     @NotNull
@@ -43,6 +46,7 @@ public class SignUpReq {
     public User toUserModel() {
         return User.builder()
                 .name(name)
+                .nickName(nickName)
                 .email(email)
                 .password(password)
                 .identity(identity)
