@@ -1,5 +1,5 @@
 package com.example.MPBE.util.enums;
 
 public enum Identity {
-    ADMIN, STUDENT, GRADUATE
+    ROLE_ADMIN, ROLE_STUDENT, ROLE_GRADUATE
 }

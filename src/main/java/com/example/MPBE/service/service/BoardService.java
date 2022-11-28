@@ -37,6 +37,11 @@ public class BoardService {
         return postRepository.existsById(id);
     }
 
+    public String postType(Long id) {
+        Post post = postRepository.findById(id).orElse(null);
+        return post.getBoardType().toString();
+    }
+
     @Transactional
     public void addPost(PostReq postReq){
         User user = findCurrentUser();
