@@ -1,6 +1,7 @@
 package com.example.MPBE.service.service;
 
 import com.example.MPBE.domain.model.Post;
+import com.example.MPBE.domain.model.PostLike;
 import com.example.MPBE.domain.model.User;
 import com.example.MPBE.domain.repository.*;
 import com.example.MPBE.service.dto.CommentDto;
@@ -59,5 +60,18 @@ public class BoardService {
         User user = findCurrentUser();
         Post post = postRepository.findById(postId).orElse(null);
         commentRepository.save(commentReq.toModel(user,post));
+    }
+
+    @Transactional
+    public boolean addOrSubPostLike(Long postId){
+        User user = findCurrentUser();
+        Post post = postRepository.findById(postId).orElse(null);
+        PostLike postLike = postLikeRepository.findByUserAndPost(user,post).orElse(null);
+        if(postLike!=null) {
+            postLikeRepository.delete(postLike);
+            return false;
+        }
+        postLikeRepository.save(new PostLike(user,post));
+        return true;
     }
 }

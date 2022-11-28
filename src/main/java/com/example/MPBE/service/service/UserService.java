@@ -56,6 +56,7 @@ public class UserService {
         User byNickName = userRepository.findByNickName(nickName).orElse(null);
         return byNickName != null;
     }
+
     public boolean isMediaStudent(String name, Integer stuendId) {
         MediaStudent byMediaStudent = mediaStudentRepository.findByNameAndStudentId(name, stuendId).orElse(null);
         return byMediaStudent != null;
@@ -83,6 +84,7 @@ public class UserService {
                 .track(user.getTrack())
                 .build();
     }
+
     public InfoDto getMyInfo() {
         User user = findCurrentUser();
         return InfoDto.builder()

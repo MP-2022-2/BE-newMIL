@@ -27,4 +27,8 @@ public class PostLike extends BaseModel{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     Post post;
+    public PostLike(User user, Post post){
+        this.user = user;
+        this.post = post;
+    }
 }

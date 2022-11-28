@@ -40,6 +40,15 @@ public class BoardController {
         return ResponseEntity.status(201).body(new BaseResponse("댓글 작성 완료.",201));
     }
 
+    @PostMapping("/free/{id}/postlike")
+    public ResponseEntity<? extends BaseResponse> addOrSubPostLike(@Valid @PathVariable(value = "id") Long postId){
+        if(!boardService.isExistPost(postId))
+            return ResponseEntity.status(404).body(new BaseResponse("해당 게시글이 존재하지 않습니다.",404));
+        if(!boardService.addOrSubPostLike(postId))
+            return ResponseEntity.status(200).body(new BaseResponse("좋아요가 취소됐습니다.",200));
+        return ResponseEntity.status(201).body(new BaseResponse("좋아요 누르기가 성공했습니다.",201));
+    }
+
     @GetMapping("/free/{id}")
     public ResponseEntity<? extends BaseResponse> getPost(@Valid @PathVariable(value = "id") Long postId){
         if(!boardService.isExistPost(postId))
