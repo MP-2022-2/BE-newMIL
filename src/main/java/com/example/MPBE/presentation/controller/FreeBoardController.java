@@ -10,6 +10,7 @@ import com.example.MPBE.service.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,43 +18,54 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/board")
-public class BoardController {
+public class FreeBoardController {
     private final BoardService boardService;
 
     @PostMapping("/free")
-    public ResponseEntity<? extends BaseResponse> addPost(@Valid @RequestBody PostReq postReq){
+    public ResponseEntity<? extends BaseResponse> addFreeBoardPost(@Valid @RequestBody PostReq postReq){
         boardService.addPost(postReq);
         return ResponseEntity.status(201).body(new BaseResponse("자유 게시판에 글이 등록되었습니다.",201));
     }
 
     @GetMapping("/free")
-    public ResponseEntity<? extends BaseResponse> getPosts(@Valid Pageable pageable){
+    public ResponseEntity<? extends BaseResponse> getFreeBoardPosts(@Valid Pageable pageable){
         return ResponseEntity.status(200).body(new PostListReq("글 목록 조회 완료",200,boardService.getFreeBoardAll(pageable)));
     }
 
+    @GetMapping("/free/{id}")
+    public ResponseEntity<? extends BaseResponse> getFreeBoardPost(@Valid @PathVariable(value = "id") Long postId){
+        if(!boardService.isExistPost(postId))
+            return ResponseEntity.status(404).body(new BaseResponse("해당 게시글이 존재하지 않습니다.",404));
+        if(!boardService.postType(postId).equals("FREE"))
+            return ResponseEntity.status(400).body(new BaseResponse("자유 게시판의 글이 아닙니다.",400));
+        PostDto postDto = boardService.getPost(postId);
+        return ResponseEntity.status(200).body(new PostRes("게시글 조회에 성공했습니다.",200,postDto));
+    }
+
     @PostMapping("/free/{id}/comment")
-    public ResponseEntity<? extends BaseResponse> addComment(@Valid @PathVariable(value = "id") Long postId,
+    public ResponseEntity<? extends BaseResponse> addFreeBoardComment(@Valid @PathVariable(value = "id") Long postId,
                                                              @RequestBody CommentReq commentReq){
         if(!boardService.isExistPost(postId))
             return ResponseEntity.status(404).body(new BaseResponse("해당 게시글이 존재하지 않습니다.",404));
+        if(!boardService.postType(postId).equals("FREE"))
+            return ResponseEntity.status(400).body(new BaseResponse("자유 게시판의 글이 아닙니다.",400));
         boardService.addComment(postId, commentReq);
         return ResponseEntity.status(201).body(new BaseResponse("댓글 작성 완료.",201));
     }
 
-    @PostMapping("/free/{id}/postlike")
-    public ResponseEntity<? extends BaseResponse> addOrSubPostLike(@Valid @PathVariable(value = "id") Long postId){
+    @PostMapping("/{board-type}/{id}/postlike")
+    public ResponseEntity<? extends BaseResponse> addOrSubPostLike(@Valid @PathVariable(value = "id") Long postId,
+                                                                   @PathVariable(value = "board-type") String boardType){
         if(!boardService.isExistPost(postId))
             return ResponseEntity.status(404).body(new BaseResponse("해당 게시글이 존재하지 않습니다.",404));
+
+        if(boardType.equals("FREE")&&!boardService.postType(postId).equals("FREE"))
+            return ResponseEntity.status(400).body(new BaseResponse("자유 게시판의 글이 아닙니다.",400));
+
         if(!boardService.addOrSubPostLike(postId))
             return ResponseEntity.status(200).body(new BaseResponse("좋아요가 취소됐습니다.",200));
         return ResponseEntity.status(201).body(new BaseResponse("좋아요 누르기가 성공했습니다.",201));
     }
-
-    @GetMapping("/free/{id}")
-    public ResponseEntity<? extends BaseResponse> getPost(@Valid @PathVariable(value = "id") Long postId){
-        if(!boardService.isExistPost(postId))
-            return ResponseEntity.status(404).body(new BaseResponse("해당 게시글이 존재하지 않습니다.",404));
-        PostDto postDto = boardService.getPost(postId);
-        return ResponseEntity.status(200).body(new PostRes("게시글 조회에 성공했습니다.",200,postDto));
-    }
 }
+
+

@@ -41,6 +41,7 @@ public class User extends BaseModel{
     Integer studentId;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     Identity identity;
 
     String company;
