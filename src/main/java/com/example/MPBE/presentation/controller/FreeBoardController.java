@@ -61,10 +61,6 @@ public class FreeBoardController {
 
         if(boardType.equals("FREE")&&!boardService.postType(postId).equals("FREE"))
             return ResponseEntity.status(400).body(new BaseResponse("자유 게시판의 글이 아닙니다.",400));
-        else if(boardType.equals("STUDENT")&&!boardService.postType(postId).equals("STUDENT"))
-            return ResponseEntity.status(400).body(new BaseResponse("재학생 게시판의 글이 아닙니다.",400));
-        else if(boardType.equals("GRADUATE")&&!boardService.postType(postId).equals("GRADUATE"))
-            return ResponseEntity.status(400).body(new BaseResponse("졸업생 게시판의 글이 아닙니다.",400));
 
         if(!boardService.addOrSubPostLike(postId))
             return ResponseEntity.status(200).body(new BaseResponse("좋아요가 취소됐습니다.",200));

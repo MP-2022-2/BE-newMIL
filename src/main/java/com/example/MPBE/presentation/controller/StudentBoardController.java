@@ -53,4 +53,17 @@ public class StudentBoardController {
         boardService.addComment(postId, commentReq);
         return ResponseEntity.status(201).body(new BaseResponse("댓글 작성 완료.",201));
     }
+
+    @PostMapping("/student/{id}/postlike")
+    public ResponseEntity<? extends BaseResponse> addOrSubPostLike(@Valid @PathVariable(value = "id") Long postId){
+        if(!boardService.isExistPost(postId))
+            return ResponseEntity.status(404).body(new BaseResponse("해당 게시글이 존재하지 않습니다.",404));
+
+        if(!boardService.postType(postId).equals("STUDENT"))
+            return ResponseEntity.status(400).body(new BaseResponse("재학생 게시판의 글이 아닙니다.",400));
+
+        if(!boardService.addOrSubPostLike(postId))
+            return ResponseEntity.status(200).body(new BaseResponse("좋아요가 취소됐습니다.",200));
+        return ResponseEntity.status(201).body(new BaseResponse("좋아요 누르기가 성공했습니다.",201));
+    }
 }
