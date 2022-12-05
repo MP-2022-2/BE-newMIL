@@ -69,6 +69,24 @@ public class BoardService {
     }
 
     @Transactional
+    public List<PostDto> getStudentBoardAll(Pageable pageable) {
+        Page<Post> studentPostList = postRepository.findAllByBoardType(BoardType.STUDENT,pageable);
+        return studentPostList.toList().stream().map(s -> new PostDto(s)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PostDto> getGraduateBoardAll(Pageable pageable) {
+        Page<Post> studentPostList = postRepository.findAllByBoardType(BoardType.GRADUATE,pageable);
+        return studentPostList.toList().stream().map(s -> new PostDto(s)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PostDto> getQuestionBoardAll(Pageable pageable) {
+        Page<Post> studentPostList = postRepository.findAllByBoardType(BoardType.QUESTION,pageable);
+        return studentPostList.toList().stream().map(s -> new PostDto(s)).collect(Collectors.toList());
+    }
+
+    @Transactional
     public PostDto getPost(Long postId){
         return new PostDto(postRepository.findById(postId).orElse(null));
     }

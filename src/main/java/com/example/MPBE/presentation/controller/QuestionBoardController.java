@@ -28,7 +28,7 @@ public class QuestionBoardController {
 
     @GetMapping("/question")
     public ResponseEntity<? extends BaseResponse> getQuestionBoardPosts(@Valid Pageable pageable){
-        return ResponseEntity.status(200).body(new PostListReq("글 목록 조회 완료",200,boardService.getFreeBoardAll(pageable)));
+        return ResponseEntity.status(200).body(new PostListReq("글 목록 조회 완료",200,boardService.getQuestionBoardAll(pageable)));
     }
 
     @GetMapping("/question/{id}")
