@@ -55,4 +55,14 @@ public class Post extends BaseModel{
         this.postLikeList.add(postLike);
         postLike.setPost(this);
     }
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    List<Tag> tagList = new LinkedList<>();
+    public void addTag(Tag tag){
+        if (this.tagList == null) {
+            this.tagList = new LinkedList<>();
+        }
+        this.tagList.add(tag);
+        tag.setPost(this);
+    }
 }

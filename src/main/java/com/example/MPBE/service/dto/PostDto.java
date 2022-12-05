@@ -33,6 +33,8 @@ public class PostDto {
 
     List<CommentDto> commentDtoList;
 
+    List<TagDto> tagDtoList;
+
     public PostDto(Post post){
         this.id = post.getId();
         this.title = post.getTitle();
@@ -42,5 +44,6 @@ public class PostDto {
         this.like = post.getPostLikeList().size();
         this.comment = post.getCommentList().size();
         this.commentDtoList = post.getCommentList().stream().map(e -> new CommentDto(e)).collect(Collectors.toList());
+        this.tagDtoList = post.getTagList().stream().map(e -> new TagDto(e)).collect(Collectors.toList());
     }
 }
