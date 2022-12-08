@@ -7,9 +7,11 @@ import lombok.Getter;
 @Getter
 public class PostRes extends BaseResponse{
     PostDto postDto;
+    Boolean isLikedPost;
 
-    public PostRes(String msg, Integer status, PostDto postDto){
+    public PostRes(String msg, Integer status, PostDto postDto, Boolean isLikedPost){
         super(msg,status);
         this.postDto=postDto;
+        this.isLikedPost=isLikedPost;
     }
 }

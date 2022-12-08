@@ -1,6 +1,7 @@
 package com.example.MPBE.service.request;
 
 import com.example.MPBE.domain.model.Post;
+import com.example.MPBE.domain.model.Tag;
 import com.example.MPBE.domain.model.User;
 import com.example.MPBE.util.enums.BoardType;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -24,6 +26,9 @@ public class PostReq {
     @NotNull
     String content;
 
+    List<String> tagList;
+
+    // Todo : Tag 받아서 모델화 하는거
     public Post toModel(User user){
         Post post = Post.builder()
                 .user(user)

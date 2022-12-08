@@ -39,7 +39,8 @@ public class FreeBoardController {
         if(!boardService.postType(postId).equals("FREE"))
             return ResponseEntity.status(400).body(new BaseResponse("자유 게시판의 글이 아닙니다.",400));
         PostDto postDto = boardService.getPost(postId);
-        return ResponseEntity.status(200).body(new PostRes("게시글 조회에 성공했습니다.",200,postDto));
+        boolean isLikedPost = boardService.isLikedPost(postId);
+        return ResponseEntity.status(200).body(new PostRes("게시글 조회에 성공했습니다.",200,postDto,isLikedPost));
     }
 
     @PostMapping("/free/{id}/comment")
@@ -53,13 +54,12 @@ public class FreeBoardController {
         return ResponseEntity.status(201).body(new BaseResponse("댓글 작성 완료.",201));
     }
 
-    @PostMapping("/{board-type}/{id}/postlike")
-    public ResponseEntity<? extends BaseResponse> addOrSubPostLike(@Valid @PathVariable(value = "id") Long postId,
-                                                                   @PathVariable(value = "board-type") String boardType){
+    @PostMapping("/free/{id}/postlike")
+    public ResponseEntity<? extends BaseResponse> addOrSubPostLike(@Valid @PathVariable(value = "id") Long postId){
         if(!boardService.isExistPost(postId))
             return ResponseEntity.status(404).body(new BaseResponse("해당 게시글이 존재하지 않습니다.",404));
 
-        if(boardType.equals("FREE")&&!boardService.postType(postId).equals("FREE"))
+        if(!boardService.postType(postId).equals("FREE"))
             return ResponseEntity.status(400).body(new BaseResponse("자유 게시판의 글이 아닙니다.",400));
 
         if(!boardService.addOrSubPostLike(postId))

@@ -2,6 +2,7 @@ package com.example.MPBE.service.service;
 
 import com.example.MPBE.domain.model.Post;
 import com.example.MPBE.domain.model.PostLike;
+import com.example.MPBE.domain.model.Tag;
 import com.example.MPBE.domain.model.User;
 import com.example.MPBE.domain.repository.*;
 import com.example.MPBE.service.dto.CommentDto;
@@ -26,6 +27,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final PostLikeRepository postLikeRepository;
+    private final TagRepository tagRepository;
 
     private User findCurrentUser(){
         User user = userRepository.findById(SecurityUtil.getCurrentUserId())
@@ -46,6 +48,17 @@ public class BoardService {
     public void addPost(PostReq postReq){
         User user = findCurrentUser();
         Post post = postReq.toModel(user);
+        if(postReq.getTagList()!=null){
+            for(String s : postReq.getTagList()){
+                Tag tag = Tag.builder()
+                        .tag(s)
+                        .post(post)
+                        .boardType(postReq.getBoardType())
+                        .build();
+                post.addTag(tag);
+                tagRepository.save(tag);
+            }
+        }
         postRepository.save(post);
     }
 
@@ -56,10 +69,34 @@ public class BoardService {
     }
 
     @Transactional
+    public List<PostDto> getStudentBoardAll(Pageable pageable) {
+        Page<Post> studentPostList = postRepository.findAllByBoardType(BoardType.STUDENT,pageable);
+        return studentPostList.toList().stream().map(s -> new PostDto(s)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PostDto> getGraduateBoardAll(Pageable pageable) {
+        Page<Post> studentPostList = postRepository.findAllByBoardType(BoardType.GRADUATE,pageable);
+        return studentPostList.toList().stream().map(s -> new PostDto(s)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PostDto> getQuestionBoardAll(Pageable pageable) {
+        Page<Post> studentPostList = postRepository.findAllByBoardType(BoardType.QUESTION,pageable);
+        return studentPostList.toList().stream().map(s -> new PostDto(s)).collect(Collectors.toList());
+    }
+
+    @Transactional
     public PostDto getPost(Long postId){
         return new PostDto(postRepository.findById(postId).orElse(null));
     }
 
+    @Transactional
+    public Boolean isLikedPost(Long postId) {
+        User user = findCurrentUser();
+        Post post = postRepository.findById(postId).orElse(null);
+        return user.isLikedPost(post);
+    }
     @Transactional
     public void addComment(Long postId, CommentReq commentReq){
         User user = findCurrentUser();
@@ -76,7 +113,10 @@ public class BoardService {
             postLikeRepository.delete(postLike);
             return false;
         }
-        postLikeRepository.save(new PostLike(user,post));
+        postLike = new PostLike(user,post);
+        user.addLike(postLike);
+        post.addLike(postLike);
+        postLikeRepository.save(postLike);
         return true;
     }
 }
