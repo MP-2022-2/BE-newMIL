@@ -17,9 +17,13 @@ public class CommentDto {
     @NotNull
     String nickName;
 
+    @NotNull
+    Long postId;
+
     public CommentDto(Comment comment){
         this.text = comment.getText();
         this.createdAt = comment.getCreatedAt();
         this.nickName = comment.getUser().getNickName();
+        this.postId = comment.getPost().getId();
     }
 }

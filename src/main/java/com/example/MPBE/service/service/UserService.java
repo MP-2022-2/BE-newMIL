@@ -1,12 +1,10 @@
 package com.example.MPBE.service.service;
 
-import com.example.MPBE.domain.model.MediaStudent;
-import com.example.MPBE.domain.model.RefreshToken;
-import com.example.MPBE.domain.model.User;
-import com.example.MPBE.domain.repository.MediaStudentRepository;
-import com.example.MPBE.domain.repository.RefreshTokenRepository;
-import com.example.MPBE.domain.repository.UserRepository;
+import com.example.MPBE.domain.model.*;
+import com.example.MPBE.domain.repository.*;
+import com.example.MPBE.service.dto.CommentDto;
 import com.example.MPBE.service.dto.InfoDto;
+import com.example.MPBE.service.dto.PostDto;
 import com.example.MPBE.service.dto.TokenDto;
 import com.example.MPBE.service.request.LoginReq;
 import com.example.MPBE.service.request.SignUpReq;
@@ -16,12 +14,17 @@ import com.example.MPBE.util.jwt.TokenProvider;
 import com.example.MPBE.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -30,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     private final PasswordEncoder passwordEncoder;
     private final MediaStudentRepository mediaStudentRepository;
@@ -114,5 +119,21 @@ public class UserService {
 
         // 5. 토큰 발금
         return tokenDto;
+    }
+
+    @Transactional
+    public List<PostDto> getMyPosts(Pageable pageable){
+        User user = findCurrentUser();
+        Page<Post> postList = postRepository.findAllByUser(user,pageable);
+        List<PostDto> postDtoList = postList.toList().stream().map(e -> new PostDto(e)).collect(Collectors.toList());
+        return postDtoList;
+    }
+
+    @Transactional
+    public List<CommentDto> getMyComments(Pageable pageable){
+        User user = findCurrentUser();
+        Page<Comment> commentList = commentRepository.findAllByUser(user,pageable);
+        List<CommentDto> commentDtoList = commentList.toList().stream().map(e -> new CommentDto(e)).collect(Collectors.toList());
+        return commentDtoList;
     }
 }

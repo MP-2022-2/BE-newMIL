@@ -6,10 +6,10 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class PostListReq extends BaseResponse{
+public class PostListRes extends BaseResponse{
     List<PostDto> postDtoList;
 
-    public PostListReq(String msg, Integer status, List<PostDto> postDtoList){
+    public PostListRes(String msg, Integer status, List<PostDto> postDtoList){
         super(msg,status);
         this.postDtoList=postDtoList;
     }
