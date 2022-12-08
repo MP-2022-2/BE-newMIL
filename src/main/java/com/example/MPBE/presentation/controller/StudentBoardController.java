@@ -4,7 +4,7 @@ import com.example.MPBE.service.dto.PostDto;
 import com.example.MPBE.service.request.CommentReq;
 import com.example.MPBE.service.request.PostReq;
 import com.example.MPBE.service.response.BaseResponse;
-import com.example.MPBE.service.response.PostListReq;
+import com.example.MPBE.service.response.PostListRes;
 import com.example.MPBE.service.response.PostRes;
 import com.example.MPBE.service.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class StudentBoardController {
 
     @GetMapping("/student")
     public ResponseEntity<? extends BaseResponse> getStudentBoardPosts(@Valid Pageable pageable){
-        return ResponseEntity.status(200).body(new PostListReq("글 목록 조회 완료",200,boardService.getFreeBoardAll(pageable)));
+        return ResponseEntity.status(200).body(new PostListRes("글 목록 조회 완료",200,boardService.getFreeBoardAll(pageable)));
     }
 
     @GetMapping("/student/{id}")

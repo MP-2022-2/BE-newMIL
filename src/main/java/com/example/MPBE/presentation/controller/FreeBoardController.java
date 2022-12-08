@@ -4,13 +4,12 @@ import com.example.MPBE.service.dto.PostDto;
 import com.example.MPBE.service.request.CommentReq;
 import com.example.MPBE.service.request.PostReq;
 import com.example.MPBE.service.response.BaseResponse;
-import com.example.MPBE.service.response.PostListReq;
+import com.example.MPBE.service.response.PostListRes;
 import com.example.MPBE.service.response.PostRes;
 import com.example.MPBE.service.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,7 +28,7 @@ public class FreeBoardController {
 
     @GetMapping("/free")
     public ResponseEntity<? extends BaseResponse> getFreeBoardPosts(@Valid Pageable pageable){
-        return ResponseEntity.status(200).body(new PostListReq("글 목록 조회 완료",200,boardService.getFreeBoardAll(pageable)));
+        return ResponseEntity.status(200).body(new PostListRes("글 목록 조회 완료",200,boardService.getFreeBoardAll(pageable)));
     }
 
     @GetMapping("/free/{id}")
