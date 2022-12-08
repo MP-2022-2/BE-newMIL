@@ -1,13 +1,8 @@
 package com.example.MPBE.service.service;
 
-import com.example.MPBE.domain.model.MediaStudent;
-import com.example.MPBE.domain.model.Post;
-import com.example.MPBE.domain.model.RefreshToken;
-import com.example.MPBE.domain.model.User;
-import com.example.MPBE.domain.repository.MediaStudentRepository;
-import com.example.MPBE.domain.repository.PostRepository;
-import com.example.MPBE.domain.repository.RefreshTokenRepository;
-import com.example.MPBE.domain.repository.UserRepository;
+import com.example.MPBE.domain.model.*;
+import com.example.MPBE.domain.repository.*;
+import com.example.MPBE.service.dto.CommentDto;
 import com.example.MPBE.service.dto.InfoDto;
 import com.example.MPBE.service.dto.PostDto;
 import com.example.MPBE.service.dto.TokenDto;
@@ -39,6 +34,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     private final PasswordEncoder passwordEncoder;
     private final MediaStudentRepository mediaStudentRepository;
@@ -141,5 +137,13 @@ public class UserService {
         Page<Post> postList = postRepository.findAllByUser(user,pageable);
         List<PostDto> postDtoList = postList.toList().stream().map(e -> new PostDto(e)).collect(Collectors.toList());
         return postDtoList;
+    }
+
+    @Transactional
+    public List<CommentDto> getMyComments(Pageable pageable){
+        User user = findCurrentUser();
+        Page<Comment> commentList = commentRepository.findAllByUser(user,pageable);
+        List<CommentDto> commentDtoList = commentList.toList().stream().map(e -> new CommentDto(e)).collect(Collectors.toList());
+        return commentDtoList;
     }
 }

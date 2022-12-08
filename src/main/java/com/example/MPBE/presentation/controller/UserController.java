@@ -1,13 +1,11 @@
 package com.example.MPBE.presentation.controller;
 
+import com.example.MPBE.service.dto.CommentDto;
 import com.example.MPBE.service.dto.InfoDto;
 import com.example.MPBE.service.dto.PostDto;
 import com.example.MPBE.service.dto.TokenDto;
 import com.example.MPBE.service.request.*;
-import com.example.MPBE.service.response.BaseResponse;
-import com.example.MPBE.service.response.LoginRes;
-import com.example.MPBE.service.response.MyInfoRes;
-import com.example.MPBE.service.response.PostListRes;
+import com.example.MPBE.service.response.*;
 import com.example.MPBE.service.service.CertificationService;
 import com.example.MPBE.service.service.MailService;
 import com.example.MPBE.service.service.UserService;
@@ -90,5 +88,11 @@ public class UserController {
     public ResponseEntity<? extends BaseResponse> getMyPost(@Valid Pageable pageable){
         List<PostDto> postDtoList = userService.getMyPosts(pageable);
         return ResponseEntity.status(200).body(new PostListRes("내가 쓴 글 목록 조회에 성공했습니다.",200,postDtoList));
+    }
+
+    @GetMapping("/mine/my-comment")
+    public ResponseEntity<? extends BaseResponse> getMyComment(@Valid Pageable pageable){
+        List<CommentDto> commentDtoList = userService.getMyComments(pageable);
+        return ResponseEntity.status(200).body(new CommentListRes("내가 쓴 댓글 목록 조회에 성공했습니다.",200,commentDtoList));
     }
 }
