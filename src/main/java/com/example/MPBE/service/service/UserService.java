@@ -77,22 +77,12 @@ public class UserService {
 
     public InfoDto getLoginInfo(String userId){
         User user = userRepository.findByUserId(userId).orElse(null);
-        return InfoDto.builder()
-                .name(user.getName())
-                .email(user.getEmail())
-                .studentId(user.getStudentId())
-                .track(user.getTrack())
-                .build();
+        return new InfoDto(user);
     }
 
     public InfoDto getMyInfo() {
         User user = findCurrentUser();
-        return InfoDto.builder()
-                .name(user.getName())
-                .email(user.getEmail())
-                .studentId(user.getStudentId())
-                .track(user.getTrack())
-                .build();
+        return new InfoDto(user);
     }
 
     @Transactional

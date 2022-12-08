@@ -40,7 +40,8 @@ public class GraduateBoardController{
         if(!boardService.postType(postId).equals("GRADUATE"))
             return ResponseEntity.status(400).body(new BaseResponse("졸업생 게시판의 글이 아닙니다.",400));
         PostDto postDto = boardService.getPost(postId);
-        return ResponseEntity.status(200).body(new PostRes("게시글 조회에 성공했습니다.",200,postDto));
+        boolean isLikedPost = boardService.isLikedPost(postId);
+        return ResponseEntity.status(200).body(new PostRes("게시글 조회에 성공했습니다.",200,postDto,isLikedPost));
     }
 
     @PostMapping("/graduate/{id}/comment")

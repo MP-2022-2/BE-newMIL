@@ -81,13 +81,20 @@ public class User extends BaseModel{
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<Post> likeList = new LinkedList<>();
+    List<PostLike> likeList = new LinkedList<>();
     public void addLike(PostLike postLike) {
         if(this.likeList == null) {
             this.likeList = new LinkedList<>();
         }
-        this.likeList.add(postLike.getPost());
+        this.likeList.add(postLike);
         postLike.setUser(this);
+    }
+
+    public Boolean isLikedPost(Post post) {
+        for(PostLike postLike : this.likeList){
+            if(postLike.getPost().getId()==post.getId()) return true;
+        }
+        return false;
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

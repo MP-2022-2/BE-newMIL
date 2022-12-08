@@ -92,6 +92,12 @@ public class BoardService {
     }
 
     @Transactional
+    public Boolean isLikedPost(Long postId) {
+        User user = findCurrentUser();
+        Post post = postRepository.findById(postId).orElse(null);
+        return user.isLikedPost(post);
+    }
+    @Transactional
     public void addComment(Long postId, CommentReq commentReq){
         User user = findCurrentUser();
         Post post = postRepository.findById(postId).orElse(null);
@@ -107,7 +113,10 @@ public class BoardService {
             postLikeRepository.delete(postLike);
             return false;
         }
-        postLikeRepository.save(new PostLike(user,post));
+        postLike = new PostLike(user,post);
+        user.addLike(postLike);
+        post.addLike(postLike);
+        postLikeRepository.save(postLike);
         return true;
     }
 }
