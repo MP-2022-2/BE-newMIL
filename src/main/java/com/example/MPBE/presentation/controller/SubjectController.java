@@ -30,7 +30,7 @@ public class SubjectController {
     public ResponseEntity<? extends BaseResponse> addSubject(@Valid @PathVariable(value = "major-or-non-major") String majorOrNot, @RequestBody SubjectRegistrationReq subjectRegistrationReq) throws IllegalAccessException {
         boolean isMajor = Subject.verify(majorOrNot);
         if(!subjectService.saveWhenLogined(subjectRegistrationReq.getSubjectList(),isMajor))
-            return ResponseEntity.status(409).body(new BaseResponse("이미 등록된 과목이 존재합니다.", 409));
+            return ResponseEntity.status(409).body(new BaseResponse("이미 등록된 과목입니다.", 409));
         return ResponseEntity.status(201).body(new BaseResponse("수강 과목 등록에 성공했습니다.",201));
     }
 
