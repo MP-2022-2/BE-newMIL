@@ -30,7 +30,7 @@ public class GraduateBoardController{
 
     @GetMapping("/graduate")
     public ResponseEntity<? extends BaseResponse> getGraduateBoardPosts(@Valid Pageable pageable){
-        return ResponseEntity.status(200).body(new PostListRes("글 목록 조회 완료",200,boardService.getFreeBoardAll(pageable)));
+        return ResponseEntity.status(200).body(new PostListRes("글 목록 조회 완료",200,boardService.getGraduateBoardAll(pageable)));
     }
 
     @GetMapping("/graduate/{id}")
