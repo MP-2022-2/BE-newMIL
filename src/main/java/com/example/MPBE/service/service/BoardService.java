@@ -119,4 +119,10 @@ public class BoardService {
         postLikeRepository.save(postLike);
         return true;
     }
+
+    @Transactional
+    public List<PostDto> getTop5(){
+        List<Post> top5List = postRepository.findTop5ByOrderByIdDesc();
+        return top5List.stream().map(e -> new PostDto(e)).collect(Collectors.toList());
+    }
 }

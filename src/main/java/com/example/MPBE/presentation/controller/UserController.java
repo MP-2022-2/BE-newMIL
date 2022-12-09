@@ -78,6 +78,14 @@ public class UserController {
         return ResponseEntity.status(200).body(new MyInfoRes("유저 정보를 가져왔습니다.", 200, infoDto));
     }
 
+    @PutMapping("/mine/nick-name")
+    public ResponseEntity<? extends BaseResponse> nickNameVerification(@Valid @RequestBody NickNameChangingReq nickNameChangingReq){
+        if(userService.isExistNickName(nickNameChangingReq.getNickName()))
+            return ResponseEntity.status(409).body(new BaseResponse("이미 존재하는 닉네임 입니다.", 409));
+        userService.updateNickName(nickNameChangingReq.getNickName());
+        return ResponseEntity.status(200).body(new BaseResponse("닉네임 변경에 성공했습니다.",200));
+    }
+
     @PutMapping("/mine/newinfo")
     public ResponseEntity<? extends BaseResponse> updateInfo(@RequestBody UpdateMyInfoReq updateMyInfoReq) {
         userService.update(updateMyInfoReq);
