@@ -1,6 +1,7 @@
 package com.example.MPBE.service.dto;
 
 import com.example.MPBE.domain.model.Post;
+import com.example.MPBE.util.enums.BoardType;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 
@@ -31,6 +32,9 @@ public class PostDto {
     @NotNull
     Integer comment;
 
+    @NotNull
+    BoardType boardType;
+
     List<CommentDto> commentDtoList;
 
     List<String> tagList;
@@ -43,6 +47,7 @@ public class PostDto {
         this.nickname = post.getUser().getNickName();
         this.like = post.getPostLikeList().size();
         this.comment = post.getCommentList().size();
+        this.boardType = post.getBoardType();
         this.commentDtoList = post.getCommentList().stream().map(e -> new CommentDto(e)).collect(Collectors.toList());
         this.tagList = post.getTagList().stream().map(e ->e.getTag()).collect(Collectors.toList());
     }
