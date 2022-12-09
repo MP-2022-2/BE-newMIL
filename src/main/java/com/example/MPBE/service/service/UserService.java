@@ -98,6 +98,12 @@ public class UserService {
         user.updateMyInfo(company,track);
     }
 
+    @Transactional
+    public void updateNickName(String nickName){
+        User user = findCurrentUser();
+        user.updateMyNickName(nickName);
+    }
+
     public TokenDto createToken(LoginReq loginReq) {
         // 1. Longin Id/pw 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginReq.getUserId(), loginReq.getPassword());

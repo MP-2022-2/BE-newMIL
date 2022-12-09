@@ -111,5 +111,9 @@ public class User extends BaseModel{
         this.company = company;
         this.track = track;
     }
+
+    public void updateMyNickName(String nickName){
+        this.nickName = nickName;
+    }
     // Todo : User Password 암호화 메소드 추가
 }
