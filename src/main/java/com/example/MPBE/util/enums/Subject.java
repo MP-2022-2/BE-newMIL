@@ -3,6 +3,8 @@ package com.example.MPBE.util.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Locale;
+
 @Getter
 @AllArgsConstructor
 public enum Subject {
@@ -13,8 +15,8 @@ public enum Subject {
 
     public static boolean verify(String majorOrNot) throws IllegalAccessException {
         for(Subject s : Subject.values()){
-            if(s.subjectName.equals(majorOrNot)&&s==MAJOR) return true;
-            else if(s.subjectName.equals(majorOrNot)&&s==NON_MAJOR) return false;
+            if(s.subjectName.toLowerCase().equals(majorOrNot)&&s==MAJOR) return true;
+            else if(s.subjectName.toLowerCase().equals(majorOrNot)&&s==NON_MAJOR) return false;
         }
         throw new IllegalAccessException("잘못된 URI입니다.");
     }

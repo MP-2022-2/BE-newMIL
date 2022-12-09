@@ -77,11 +77,11 @@ public class SubjectService {
     public boolean deleteMySubject(String subject, Boolean isMajor){
         User user = findCurrentUser();
         if(user.getMajorSubjectList() == null) return false;
-
         if(isMajor){
             majorSubjectRepository.deleteByUserAndSubject(user,subject);
         }
         else{
+            System.out.println(isMajor);
             nonMajorSubjectRepository.deleteByUserAndSubject(user,subject);
         }
         return true;
