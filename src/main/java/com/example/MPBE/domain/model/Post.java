@@ -6,9 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -64,5 +62,19 @@ public class Post extends BaseModel{
         }
         this.tagList.add(tag);
         tag.setPost(this);
+    }
+
+    public List<Post> hot5(List<Post> postList){
+        Collections.sort(postList,(p1,p2)->p1.getPostLikeList().size()-p2.getPostLikeList().size());
+        List<Post> hot5 = new LinkedList<>();
+        if(postList.size()<5){
+            for(Post p : postList)
+                hot5.add(p);
+            return hot5;
+        }
+        for(int i = 0; i < 5; i++){
+            hot5.add(postList.get(i));
+        }
+        return hot5;
     }
 }
