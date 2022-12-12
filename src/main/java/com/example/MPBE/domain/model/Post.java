@@ -3,9 +3,11 @@ package com.example.MPBE.domain.model;
 import com.example.MPBE.util.enums.BoardType;
 import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -14,6 +16,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Post extends BaseModel{
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -25,9 +28,8 @@ public class Post extends BaseModel{
     @NotNull
     String content;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    Date createdAt;
+    @CreatedDate
+    LocalDateTime createdAt;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,8 +66,8 @@ public class Post extends BaseModel{
         tag.setPost(this);
     }
 
-    public List<Post> hot5(List<Post> postList){
-        Collections.sort(postList,(p1,p2)->p1.getPostLikeList().size()-p2.getPostLikeList().size());
+    public static List<Post> hot5(List<Post> postList){
+        Collections.sort(postList,(p1,p2)->p2.getPostLikeList().size()-p1.getPostLikeList().size());
         List<Post> hot5 = new LinkedList<>();
         if(postList.size()<5){
             for(Post p : postList)

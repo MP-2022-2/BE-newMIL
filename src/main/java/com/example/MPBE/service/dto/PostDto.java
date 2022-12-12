@@ -5,7 +5,7 @@ import com.example.MPBE.util.enums.BoardType;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +21,7 @@ public class PostDto {
     String content;
 
     @NotNull
-    Date createdAt;
+    LocalDateTime createdAt;
 
     @NotNull
     String nickname;

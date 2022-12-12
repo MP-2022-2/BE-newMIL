@@ -2,10 +2,11 @@ package com.example.MPBE.domain.model;
 
 import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -13,10 +14,10 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class PostLike extends BaseModel{
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    Date createdAt;
+    @CreatedDate
+    LocalDateTime createdAt;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

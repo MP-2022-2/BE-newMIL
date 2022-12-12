@@ -12,11 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/main")
-public class mainBoardController {
+public class MainBoardController {
     private final BoardService boardService;
 
     @GetMapping("/top5")
     public ResponseEntity<? extends BaseResponse> getTop5(){
-        return ResponseEntity.status(200).body(new PostListRes("글 목록 조회 완료",200,boardService.getTop5()));
+        return ResponseEntity.status(200).body(new PostListRes("최신글 목록 조회 완료",200, boardService.getTop5()));
+    }
+
+    @GetMapping("/hot5")
+    public ResponseEntity<? extends BaseResponse> getHot5(){
+        return ResponseEntity.status(200).body(new PostListRes("인기글 목록 조회 완료",200, boardService.getHot5()));
     }
 }

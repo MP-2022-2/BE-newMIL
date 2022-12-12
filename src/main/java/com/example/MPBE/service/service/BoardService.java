@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -126,9 +127,10 @@ public class BoardService {
         return top5List.stream().map(e -> new PostDto(e)).collect(Collectors.toList());
     }
 
-    // Todo : 인기글 서비스 구현
-//    @Transactional
-//    public List<PostDto> getHot5(){
-//        List<Post> oneWeekPosts = postRepository.findAllByCreatedAtBetween()
-//    }
+    @Transactional
+    public List<PostDto> getHot5(){
+        LocalDateTime now = LocalDateTime.now();
+        List<Post> oneWeekPosts = postRepository.findAllByCreatedAtBetween(now.minusWeeks(1),now);
+        return Post.hot5(oneWeekPosts).stream().map(p -> new PostDto(p)).collect(Collectors.toList());
+    }
 }

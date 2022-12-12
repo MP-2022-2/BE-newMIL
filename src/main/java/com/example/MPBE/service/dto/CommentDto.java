@@ -5,7 +5,7 @@ import com.example.MPBE.util.enums.BoardType;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 public class CommentDto {
@@ -13,7 +13,7 @@ public class CommentDto {
     String text;
 
     @NotNull
-    Date createdAt;
+    LocalDateTime createdAt;
 
     @NotNull
     String nickName;
