@@ -3,12 +3,12 @@ package com.example.MPBE.domain.model;
 import com.example.MPBE.util.enums.BoardType;
 import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Entity
 @Getter
@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Post extends BaseModel{
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -27,9 +28,8 @@ public class Post extends BaseModel{
     @NotNull
     String content;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    Date createdAt;
+    @CreatedDate
+    LocalDateTime createdAt;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,5 +64,19 @@ public class Post extends BaseModel{
         }
         this.tagList.add(tag);
         tag.setPost(this);
+    }
+
+    public static List<Post> hot5(List<Post> postList){
+        Collections.sort(postList,(p1,p2)->p2.getPostLikeList().size()-p1.getPostLikeList().size());
+        List<Post> hot5 = new LinkedList<>();
+        if(postList.size()<5){
+            for(Post p : postList)
+                hot5.add(p);
+            return hot5;
+        }
+        for(int i = 0; i < 5; i++){
+            hot5.add(postList.get(i));
+        }
+        return hot5;
     }
 }

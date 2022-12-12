@@ -3,9 +3,13 @@ package com.example.MPBE.domain.model;
 import com.example.MPBE.util.enums.Identity;
 import com.example.MPBE.util.enums.Track;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User extends BaseModel{
 
     @NotNull
@@ -49,6 +54,11 @@ public class User extends BaseModel{
     @NotNull
     @Enumerated(EnumType.STRING)
     Track track;
+
+    @CreatedDate
+    LocalDateTime createdAt;
+
+    LocalDateTime nickNameModifiedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<MajorSubject> majorSubjectList;

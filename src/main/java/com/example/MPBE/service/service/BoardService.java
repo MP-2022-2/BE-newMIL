@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,5 +125,12 @@ public class BoardService {
     public List<PostDto> getTop5(){
         List<Post> top5List = postRepository.findTop5ByOrderByIdDesc();
         return top5List.stream().map(e -> new PostDto(e)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PostDto> getHot5(){
+        LocalDateTime now = LocalDateTime.now();
+        List<Post> oneWeekPosts = postRepository.findAllByCreatedAtBetween(now.minusWeeks(1),now);
+        return Post.hot5(oneWeekPosts).stream().map(p -> new PostDto(p)).collect(Collectors.toList());
     }
 }

@@ -46,7 +46,7 @@ public class SignUpReq {
     }
 
     public User toUserModel() {
-        return User.builder()
+        User user = User.builder()
                 .name(name)
                 .nickName(nickName)
                 .email(email)
@@ -57,5 +57,6 @@ public class SignUpReq {
                 .company(company)
                 .track(track)
                 .build();
+        return user;
     }
 }
