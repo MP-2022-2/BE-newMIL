@@ -125,4 +125,10 @@ public class BoardService {
         List<Post> top5List = postRepository.findTop5ByOrderByIdDesc();
         return top5List.stream().map(e -> new PostDto(e)).collect(Collectors.toList());
     }
+
+    // Todo : 인기글 서비스 구현
+//    @Transactional
+//    public List<PostDto> getHot5(){
+//        List<Post> oneWeekPosts = postRepository.findAllByCreatedAtBetween()
+//    }
 }
